@@ -6,9 +6,35 @@
   let vaccinatedNumber: number = 0;
   let othersNumber: number = 0;
   let childNumber: number = 0;
-  let totalNumber: number = 0;
+  let startCondition: boolean = false;
+  let isDropdownShown: boolean = false;
 
-  const selectElement = (e: MouseEvent) => {
+  afterUpdate(() => {
+    const statusElement: HTMLSpanElement = document.getElementById('status') as HTMLSpanElement;
+    const checkerHeaderElement: HTMLDivElement = document.getElementById('checker-header') as HTMLDivElement;
+    if (startCondition) {
+      checkerHeaderElement.style.color = '#000000';
+      if (checkCanMakan()) {
+        statusElement.textContent = 'Group Dine-In? YES*';
+        checkerHeaderElement.style.backgroundColor = '#00FF75';
+      } else {
+        statusElement.textContent = 'Group Dine-In? NO*';
+        checkerHeaderElement.style.backgroundColor = '#FF5C00';
+      }
+    }
+  });
+
+  const checkCanMakan = (): boolean => {
+    if (recoveredNumber + negativeNumber + vaccinatedNumber + othersNumber + childNumber > 5) {
+      return false;
+    }
+    return true;
+  };
+
+  const selectElement = (e: MouseEvent): void => {
+    if (!startCondition) {
+      startCondition = true;
+    }
     const targetElement: HTMLImageElement = e.target as HTMLImageElement;
     switch (targetElement.id) {
       case 'recovered':
@@ -31,7 +57,7 @@
     }
   };
 
-  const modifyRecovered = (target: HTMLImageElement) => {
+  const modifyRecovered = (target: HTMLImageElement): void => {
     if (target.classList.toggle('unselected')) {
       recoveredNumber -= 1;
     } else {
@@ -39,7 +65,7 @@
     }
   };
 
-  const modifyNegative = (target: HTMLImageElement) => {
+  const modifyNegative = (target: HTMLImageElement): void => {
     if (target.classList.toggle('unselected')) {
       negativeNumber -= 1;
     } else {
@@ -47,7 +73,7 @@
     }
   };
 
-  const modifyVaccinated = (target: HTMLImageElement) => {
+  const modifyVaccinated = (target: HTMLImageElement): void => {
     if (target.classList.toggle('unselected')) {
       vaccinatedNumber -= 1;
     } else {
@@ -55,7 +81,7 @@
     }
   };
 
-  const modifyOthers = (target: HTMLImageElement) => {
+  const modifyOthers = (target: HTMLImageElement): void => {
     if (target.classList.toggle('unselected')) {
       othersNumber -= 1;
     } else {
@@ -63,21 +89,37 @@
     }
   };
 
-  const modifyChild = (target: HTMLImageElement) => {
+  const modifyChild = (target: HTMLImageElement): void => {
     if (target.classList.toggle('unselected')) {
       childNumber -= 1;
     } else {
       childNumber += 1;
     }
   };
+
+  const showDropdown = (e: MouseEvent): void => {
+    const targetElement: HTMLImageElement = e.target as HTMLImageElement;
+    isDropdownShown = !isDropdownShown;
+  };
 </script>
 
 <main>
-  <div class="checker-header">
-    Select Your Dining Group
-    <img class="dropdown" src="./images/dropdown.png" alt="" />
+  <div id="checker-header" class="checker-header">
+    <span id="status"> Select Your Dining Group </span>
+
+    {#if startCondition}
+      <img class="dropdown" src="./images/dropdown.png" alt="" on:click={(e) => showDropdown(e)} />
+    {/if}
+
+    {#if isDropdownShown}
+      <div class="dropdown-text">
+        Based on what we currently know from the way the official sources calculates this, your group might be allowed to dine-in together.
+      </div>
+    {/if}
   </div>
-  <div class="circle"><span>{recoveredNumber + negativeNumber + vaccinatedNumber + othersNumber + childNumber}</span></div>
+  {#if startCondition && !isDropdownShown}
+    <div class="circle"><span>{recoveredNumber + negativeNumber + vaccinatedNumber + othersNumber + childNumber}</span></div>
+  {/if}
   <div class="checker-body">
     <div class="selectable-div">
       <div class="selectable-grid grid-six">
@@ -142,12 +184,27 @@
     min-height: 100vh;
   }
 
+  .upside-down {
+    transform: rotate(180deg);
+  }
+
   .dropdown {
     position: absolute;
     right: 15px;
     top: 5px;
     width: 15px;
     height: 15px;
+  }
+
+  .dropdown-text {
+    position: absolute;
+    min-width: 100vw;
+    text-align: center;
+    background-color: blue;
+    color: #ededed;
+    font-size: 1.25rem;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
   }
 
   .checker-body {
