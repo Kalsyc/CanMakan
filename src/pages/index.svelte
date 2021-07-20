@@ -18,5 +18,7 @@
     background-color: black;
     color: #ededed;
     font-size: 1.25rem;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
   }
 </style>
