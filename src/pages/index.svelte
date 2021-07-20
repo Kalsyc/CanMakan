@@ -8,13 +8,15 @@
   let childNumber: number = 0;
   let startCondition: boolean = false;
   let isDropdownShown: boolean = false;
+  let canMakan: boolean = false;
 
   afterUpdate(() => {
     const statusElement: HTMLSpanElement = document.getElementById('status') as HTMLSpanElement;
     const checkerHeaderElement: HTMLDivElement = document.getElementById('checker-header') as HTMLDivElement;
     if (startCondition) {
       checkerHeaderElement.style.color = '#000000';
-      if (checkCanMakan()) {
+      canMakan = checkCanMakan();
+      if (canMakan) {
         statusElement.textContent = 'Group Dine-In? YES*';
         checkerHeaderElement.style.backgroundColor = '#00FF75';
       } else {
@@ -98,7 +100,7 @@
   };
 
   const showDropdown = (e: MouseEvent): void => {
-    const targetElement: HTMLImageElement = e.target as HTMLImageElement;
+    //const targetElement: HTMLImageElement = e.target as HTMLImageElement;
     isDropdownShown = !isDropdownShown;
   };
 </script>
@@ -112,9 +114,39 @@
     {/if}
 
     {#if isDropdownShown}
-      <div class="dropdown-text">
-        Based on what we currently know from the way the official sources calculates this, your group might be allowed to dine-in together.
-      </div>
+      {#if canMakan}
+        <div id="dropdown-text-div" class="dropdown-text-div canMakan">
+          <div class="text-div">
+            <span class="disclaimer-text">
+              *Based on what we currently know from the way the official sources calculates this, your group might be allowed to dine-in together.
+              Please double-check your results with the official government websites, and do not take this as medical advice. We do not represent the
+              government, nor the latest rules.
+            </span>
+            <span class="mood-text"> We’re happy for you, friend. </span>
+            <span class="caption-text">
+              Do remember that it is still safer for you to avoid eating out in groups and you’ll minimize the risk to your family members.
+            </span>
+            <span class="final-text"> Let’s press on together, get vaccinated early, and stay safe. </span>
+            <div class="stuck-text">With love, from STUCK Design</div>
+          </div>
+        </div>
+      {:else}
+        <div id="dropdown-text-div" class="dropdown-text-div cannotMakan">
+          <div class="text-div">
+            <span class="disclaimer-text">
+              *Based on what we currently know from the way the official sources calculates this, your group might be allowed to dine-in together.
+              Please double-check your results with the official government websites, and do not take this as medical advice. We do not represent the
+              government, nor the latest rules.
+            </span>
+            <span class="mood-text"> We’re sad too, friend. </span>
+            <span class="caption-text">
+              However, this is best for you and your loved ones. You’ll minimize the risk to your family members. There will be brighter days ahead.
+            </span>
+            <span class="final-text"> Let’s press on together, get vaccinated early, and stay safe. </span>
+            <div class="stuck-text">With love, from STUCK Design</div>
+          </div>
+        </div>
+      {/if}
     {/if}
   </div>
   {#if startCondition && !isDropdownShown}
@@ -188,6 +220,14 @@
     transform: rotate(180deg);
   }
 
+  .canMakan {
+    background-color: #002d15;
+  }
+
+  .cannotMakan {
+    background-color: #400400;
+  }
+
   .dropdown {
     position: absolute;
     right: 15px;
@@ -196,15 +236,57 @@
     height: 15px;
   }
 
-  .dropdown-text {
+  .dropdown-text-div {
     position: absolute;
     min-width: 100vw;
     text-align: center;
-    background-color: blue;
     color: #ededed;
-    font-size: 1.25rem;
     font-family: 'Nunito', sans-serif;
+    opacity: 0.9;
+  }
+
+  .text-div {
+    padding: 2em 1em;
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .disclaimer-text {
     font-weight: 400;
+    font-size: 0.6rem;
+    margin: 1em 0;
+  }
+
+  .mood-text {
+    font-weight: 700;
+    font-size: 1rem;
+    margin: 1em 0;
+  }
+
+  .caption-text {
+    font-weight: 400;
+    font-size: 1rem;
+    margin: 1em 0;
+  }
+
+  .final-text {
+    font-weight: 700;
+    font-size: 1rem;
+    margin: 1em 0;
+  }
+
+  .stuck-text {
+    background-color: inherit;
+    padding: 1em;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 60px;
+    width: fit-content;
+    font-weight: 400;
+    font-size: 0.75rem;
+    margin: 1em 0;
   }
 
   .checker-body {
@@ -262,7 +344,7 @@
   .checker-header {
     min-width: 100vw;
     text-align: center;
-    background-color: blue;
+    background-color: black;
     color: #ededed;
     font-size: 1.25rem;
     font-family: 'Nunito', sans-serif;
