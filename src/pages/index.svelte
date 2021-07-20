@@ -9,10 +9,17 @@
   let startCondition: boolean = false;
   let isDropdownShown: boolean = false;
   let canMakan: boolean = false;
+  let isSameHousehold: boolean = false;
 
   afterUpdate(() => {
     const statusElement: HTMLSpanElement = document.getElementById('status') as HTMLSpanElement;
     const checkerHeaderElement: HTMLDivElement = document.getElementById('checker-header') as HTMLDivElement;
+    if (recoveredNumber + negativeNumber + vaccinatedNumber + othersNumber + childNumber === 0) {
+      checkerHeaderElement.style.color = '#EDEDED';
+      checkerHeaderElement.style.backgroundColor = '#000000';
+      statusElement.textContent = 'Select Your Dining Group';
+      startCondition = false;
+    }
     if (startCondition) {
       checkerHeaderElement.style.color = '#000000';
       canMakan = checkCanMakan();
@@ -102,6 +109,11 @@
   const showDropdown = (e: MouseEvent): void => {
     //const targetElement: HTMLImageElement = e.target as HTMLImageElement;
     isDropdownShown = !isDropdownShown;
+  };
+
+  const checkSameHousehold = (e: MouseEvent): void => {
+    isSameHousehold = (e.target as HTMLInputElement).checked;
+    console.log(isSameHousehold);
   };
 </script>
 
@@ -207,6 +219,17 @@
       </div>
       <span class="select-caption">AGED 0-12</span>
     </div>
+    <div class="selectable-div">
+      <div class="toggle-div">
+        <span id="falseValue">No</span>
+        <label class="switch">
+          <input type="checkbox" on:change={(e) => checkSameHousehold(e)} />
+          <span class="slider" />
+        </label>
+        <span id="falseValue">Yes</span>
+      </div>
+      <span class="select-caption">EVERYONE FROM SAME HOUSEHOLD?</span>
+    </div>
   </div>
 </main>
 
@@ -214,6 +237,58 @@
   main {
     background-color: #e5e5e5;
     min-height: 100vh;
+  }
+
+  .toggle-div {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .switch {
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    position: relative;
+    margin: 8px;
+  }
+
+  .slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #959595;
+    border-radius: 40px;
+    cursor: pointer;
+  }
+
+  .slider::before {
+    content: '';
+    height: 26px;
+    width: 26px;
+    position: absolute;
+    left: 4px;
+    bottom: 4px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    transition: 0.4s all ease;
+  }
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  input:checked + .slider::before {
+    transform: translateX(26px);
   }
 
   .upside-down {
