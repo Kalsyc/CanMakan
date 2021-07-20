@@ -34,10 +34,29 @@
   });
 
   const checkCanMakan = (): boolean => {
-    if (recoveredNumber + negativeNumber + vaccinatedNumber + othersNumber + childNumber > 5) {
+    const totalNumber: number = recoveredNumber + negativeNumber + vaccinatedNumber + othersNumber + childNumber;
+    const adultNumber: number = recoveredNumber + negativeNumber + vaccinatedNumber + othersNumber;
+    //If total exceeds 5 or no. of children is 5 and more.
+    if (totalNumber > 5 || childNumber >= 5) {
       return false;
     }
-    return true;
+    //If total number is less than or equal 2.
+    if (totalNumber <= 2) {
+      return true;
+    }
+    //If total numnber is in between 2 and 5
+    if (totalNumber > 2) {
+      //If there's someone unvaccinated, they can't join
+      if (othersNumber > 0) {
+        return false;
+      }
+      //If they are not from the same household and the number of children exceeds the number of vaccinated adults
+      if (!isSameHousehold && childNumber > adultNumber) {
+        return false;
+      }
+      return true;
+    }
+    return false;
   };
 
   const selectElement = (e: MouseEvent): void => {
@@ -107,13 +126,9 @@
   };
 
   const showDropdown = (e: MouseEvent): void => {
-    //const targetElement: HTMLImageElement = e.target as HTMLImageElement;
+    const targetElement: HTMLImageElement = e.target as HTMLImageElement;
     isDropdownShown = !isDropdownShown;
-  };
-
-  const checkSameHousehold = (e: MouseEvent): void => {
-    isSameHousehold = (e.target as HTMLInputElement).checked;
-    console.log(isSameHousehold);
+    targetElement.style.transform = targetElement.style.transform ? '' : 'rotate(180deg)';
   };
 </script>
 
@@ -223,7 +238,7 @@
       <div class="toggle-div">
         <span id="falseValue">No</span>
         <label class="switch">
-          <input type="checkbox" on:change={(e) => checkSameHousehold(e)} />
+          <input type="checkbox" bind:checked={isSameHousehold} />
           <span class="slider" />
         </label>
         <span id="falseValue">Yes</span>
@@ -289,10 +304,6 @@
 
   input:checked + .slider::before {
     transform: translateX(26px);
-  }
-
-  .upside-down {
-    transform: rotate(180deg);
   }
 
   .canMakan {
