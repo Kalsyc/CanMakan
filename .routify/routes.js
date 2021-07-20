@@ -1,11 +1,11 @@
 
 /**
  * @roxi/routify 2.18.2
- * File generated Tue Jul 20 2021 11:46:58 GMT+0800 (Singapore Standard Time)
+ * File generated Tue Jul 20 2021 12:10:23 GMT+0800 (Singapore Standard Time)
  */
 
 export const __version = "2.18.2"
-export const __timestamp = "2021-07-20T03:46:58.914Z"
+export const __timestamp = "2021-07-20T04:10:23.862Z"
 
 //buildRoutes
 import { buildClientTree } from "@roxi/routify/runtime/buildRoutes"
@@ -23,7 +23,33 @@ export const _tree = {
   "root": true,
   "ownMeta": {},
   "absolutePath": "src/pages",
-  "children": [],
+  "children": [
+    {
+      "isFile": true,
+      "isDir": false,
+      "file": "index.svelte",
+      "filepath": "/index.svelte",
+      "name": "index",
+      "ext": "svelte",
+      "badExt": false,
+      "absolutePath": "/Users/kalsyc/Desktop/STUCK/Proj/CanMakan/src/pages/index.svelte",
+      "importPath": "../src/pages/index.svelte",
+      "isLayout": false,
+      "isReset": false,
+      "isIndex": true,
+      "isFallback": false,
+      "isPage": true,
+      "ownMeta": {},
+      "meta": {
+        "recursive": true,
+        "preload": false,
+        "prerender": true
+      },
+      "path": "/index",
+      "id": "_index",
+      "component": () => import('../src/pages/index.svelte').then(m => m.default)
+    }
+  ],
   "isLayout": false,
   "isReset": false,
   "isIndex": false,
