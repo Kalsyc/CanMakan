@@ -271,6 +271,7 @@
   }
 
   .slider {
+    z-index: 500;
     position: absolute;
     top: 0;
     left: 0;
@@ -373,6 +374,7 @@
     font-weight: 400;
     font-size: 0.75rem;
     margin: 1em 0;
+    opacity: 1;
   }
 
   .checker-body {
@@ -435,5 +437,35 @@
     font-size: 1.25rem;
     font-family: 'Nunito', sans-serif;
     font-weight: 400;
+  }
+
+  @media screen and (min-width: 1440px) {
+    .disclaimer-text {
+      font-size: 1rem;
+    }
+
+    .mood-text {
+      font-size: 1.5rem;
+    }
+
+    .caption-text {
+      font-size: 1.5rem;
+    }
+
+    .final-text {
+      font-size: 1.5rem;
+    }
+
+    .select-caption {
+      font-size: 0.75rem;
+    }
+
+    .selectable-div {
+      margin: 1em 0;
+    }
+
+    .selectable-grid {
+      grid-column-gap: 20px;
+    }
   }
 </style>
