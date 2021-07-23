@@ -2,6 +2,7 @@
   import { afterUpdate } from 'svelte';
   import AdultGrid from '../components/AdultGrid.svelte';
   import ChildGrid from '../components/ChildGrid.svelte';
+  import ToggleHousehold from '../components/ToggleHousehold.svelte';
 
   let recoveredNumber: number = 0;
   let negativeNumber: number = 0;
@@ -34,6 +35,10 @@
       }
     }
   });
+
+  const directToStuck = (): void => {
+    location.href = 'https://www.stuck.sg/';
+  };
 
   const checkCanMakan = (): boolean => {
     //return false;
@@ -146,7 +151,7 @@
               Do remember that it is still safer for you to avoid eating out in groups and you’ll minimize the risk to your family members.
             </span>
             <span class="final-text"> Let’s press on together, get vaccinated early, and stay safe. </span>
-            <div class="stuck-text">With love, from STUCK Design</div>
+            <div class="stuck-text" on:click={() => directToStuck()}>With love, from STUCK Design</div>
           </div>
         </div>
       {:else}
@@ -162,7 +167,7 @@
               However, this is best for you and your loved ones. You’ll minimize the risk to your family members. There will be brighter days ahead.
             </span>
             <span class="final-text"> Let’s press on together, get vaccinated early, and stay safe. </span>
-            <div class="stuck-text">With love, from STUCK Design</div>
+            <div class="stuck-text" on:click={() => directToStuck()}>With love, from STUCK Design</div>
           </div>
         </div>
       {/if}
@@ -193,14 +198,7 @@
       <span class="select-caption">AGED 0-12</span>
     </div>
     <div class="selectable-div">
-      <div class="toggle-div">
-        <span id="falseValue">No</span>
-        <label class="switch">
-          <input type="checkbox" bind:checked={isSameHousehold} />
-          <span class="slider" />
-        </label>
-        <span id="falseValue">Yes</span>
-      </div>
+      <ToggleHousehold bind:isSameHousehold />
       <span class="select-caption">EVERYONE FROM SAME HOUSEHOLD?</span>
     </div>
   </div>
@@ -210,59 +208,6 @@
   main {
     background-color: #e5e5e5;
     min-height: 100vh;
-  }
-
-  .toggle-div {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .switch {
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-    position: relative;
-    margin: 8px;
-  }
-
-  .slider {
-    z-index: 500;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #959595;
-    border-radius: 40px;
-    cursor: pointer;
-  }
-
-  .slider::before {
-    content: '';
-    height: 26px;
-    width: 26px;
-    position: absolute;
-    left: 4px;
-    bottom: 4px;
-    border-radius: 50%;
-    background-color: #ffffff;
-    transition: 0.4s all ease;
-  }
-
-  input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-
-  input:checked + .slider::before {
-    transform: translateX(26px);
   }
 
   .canMakan {
@@ -276,13 +221,14 @@
   .dropdown {
     position: absolute;
     right: 15px;
-    top: 5px;
+    top: 0.5em;
     width: 15px;
     height: 15px;
   }
 
   .dropdown-text-div {
     position: absolute;
+    z-index: 2;
     min-width: 100vw;
     text-align: center;
     color: #ededed;
@@ -291,7 +237,8 @@
   }
 
   .text-div {
-    padding: 2em 1em;
+    padding: 1em 0.5em;
+    line-height: 1em;
     display: flex;
     justify-items: center;
     align-items: center;
@@ -301,26 +248,26 @@
 
   .disclaimer-text {
     font-weight: 400;
-    font-size: 0.6rem;
-    margin: 1em 0;
+    font-size: 0.75rem;
+    margin: 0.5em 0;
   }
 
   .mood-text {
     font-weight: 700;
     font-size: 1rem;
-    margin: 1em 0;
+    margin: 0.5em 0;
   }
 
   .caption-text {
     font-weight: 400;
     font-size: 1rem;
-    margin: 1em 0;
+    margin: 0.5em 0;
   }
 
   .final-text {
     font-weight: 700;
     font-size: 1rem;
-    margin: 1em 0;
+    margin: 0.5em 0;
   }
 
   .stuck-text {
@@ -346,28 +293,11 @@
     align-items: center;
   }
 
-  .selectable-grid {
-    display: grid;
-    grid-column-gap: 10px;
-  }
-
-  .grid-six {
-    grid-template-columns: repeat(6, 1fr);
-  }
-
-  .grid-five {
-    grid-template-columns: repeat(5, 1fr);
-  }
-
   .select-caption {
     font-family: 'Nunito', sans-serif;
     font-weight: 700;
     font-size: 0.55rem;
     margin: 10px 0;
-  }
-
-  .unselected {
-    opacity: 0.15;
   }
 
   .circle {
@@ -395,6 +325,8 @@
     font-size: 1.25rem;
     font-family: 'Nunito', sans-serif;
     font-weight: 400;
+    height: 2em;
+    line-height: 2em;
   }
 
   @media screen and (min-width: 1440px) {
@@ -420,10 +352,6 @@
 
     .selectable-div {
       margin: 1em 0;
-    }
-
-    .selectable-grid {
-      grid-column-gap: 20px;
     }
   }
 </style>

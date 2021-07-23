@@ -16,6 +16,10 @@
 </main>
 
 <style>
+  img {
+    max-height: 50px;
+  }
+
   .outline {
     position: absolute;
     z-index: 1;
@@ -27,10 +31,16 @@
 
   .selectable-grid {
     display: grid;
-    grid-column-gap: 10px;
+    grid-column-gap: 1em;
   }
 
   .grid-six {
     grid-template-columns: repeat(5, 1fr);
+  }
+
+  @media screen and (min-width: 1440px) {
+    .selectable-grid {
+      grid-column-gap: 2em;
+    }
   }
 </style>
