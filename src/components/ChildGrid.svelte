@@ -6,9 +6,9 @@
 
 <main>
   <div class="selectable-grid grid-six">
-    {#each Array(6) as _, i}
+    {#each Array(5) as _, i}
       <div>
-        <img on:click={() => onChange(i)} class="outline" src="./images/Outline@4x.png" alt="" />
+        <img on:click={() => onChange(i)} class="outline" src="./images/ChildOutline@4x.png" alt="" />
         <img class="unselected" src={image} alt="" id={type + i} />
       </div>
     {/each}
@@ -31,6 +31,6 @@
   }
 
   .grid-six {
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
   }
 </style>

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { afterUpdate } from 'svelte';
   import AdultGrid from '../components/AdultGrid.svelte';
+  import ChildGrid from '../components/ChildGrid.svelte';
 
   let recoveredNumber: number = 0;
   let negativeNumber: number = 0;
@@ -172,62 +173,23 @@
   {/if}
   <div class="checker-body">
     <div class="selectable-div">
-      <AdultGrid onChange={modifyRecovered} image="./images/selected/Recovered_Selected@4x.png" />
-      <!--
-      <div class="selectable-grid grid-six">
-       
-        {#each Array(6) as _, i}
-          <div>
-            <img on:click={() => modifyRecovered(i)} id="recovered" class="outline" src="./images/Outline@4x.png" alt="" />
-            <img class="unselected" src="./images/selected/Recovered_Selected@4x.png" alt="" id={'recovered' + i} />
-          </div>
-        {/each}
-      </div>
-    -->
+      <AdultGrid onChange={modifyRecovered} type="recovered" image="./images/selected/Recovered_Selected@4x.png" />
       <span class="select-caption">AGED 13+, RECOVERED IN PAST 270 DAYS</span>
     </div>
     <div class="selectable-div">
-      <div class="selectable-grid grid-six">
-        {#each Array(6) as _, i}
-          <div>
-            <img on:click={() => modifyNegative(i)} id="negative" class="outline" src="./images/Outline@4x.png" alt="" />
-            <img class="unselected" src="./images/selected/Negative_Selected@4x.png" alt="" id={'negative' + i} />
-          </div>
-        {/each}
-      </div>
+      <AdultGrid onChange={modifyNegative} type="negative" image="./images/selected/Negative_Selected@4x.png" />
       <span class="select-caption">AGED 13+, TESTED COVID-19-NEGATIVE IN PAST 24 HRS</span>
     </div>
     <div class="selectable-div">
-      <div class="selectable-grid grid-six">
-        {#each Array(6) as _, i}
-          <div>
-            <img on:click={() => modifyVaccinated(i)} id="vaccinated" class="outline" src="./images/Outline@4x.png" alt="" />
-            <img class="unselected" src="./images/selected/Vaccinated_Selected@4x.png" alt="" id={'vaccinated' + i} />
-          </div>
-        {/each}
-      </div>
+      <AdultGrid onChange={modifyVaccinated} type="vaccinated" image="./images/selected/Vaccinated_Selected@4x.png" />
       <span class="select-caption">AGED 13+, FULLY VACCINATED</span>
     </div>
     <div class="selectable-div">
-      <div class="selectable-grid grid-six">
-        {#each Array(6) as _, i}
-          <div>
-            <img on:click={() => modifyOthers(i)} id="others" class="outline" src="./images/Outline@4x.png" alt="" />
-            <img class="unselected" src="./images/selected/Others_Selected@4x.png" alt="" id={'others' + i} />
-          </div>
-        {/each}
-      </div>
+      <AdultGrid onChange={modifyOthers} type="others" image="./images/selected/Others_Selected@4x.png" />
       <span class="select-caption">AGED 13+, OTHERS</span>
     </div>
     <div class="selectable-div">
-      <div class="selectable-grid grid-five">
-        {#each Array(5) as _, i}
-          <div>
-            <img on:click={() => modifyChild(i)} id="child" class="outline" src="./images/ChildOutline@4x.png" alt="" />
-            <img class="unselected" src="./images/selected/Child_Selected@4x.png" alt="" id={'child' + i} />
-          </div>
-        {/each}
-      </div>
+      <ChildGrid onChange={modifyChild} type="child" image="./images/selected/Child_Selected@4x.png" />
       <span class="select-caption">AGED 0-12</span>
     </div>
     <div class="selectable-div">
