@@ -173,23 +173,23 @@
   {/if}
   <div class="checker-body">
     <div class="selectable-div">
-      <AdultGrid onChange={modifyRecovered} type="recovered" image="./images/selected/Recovered_Selected@4x.png" />
+      <AdultGrid onChange={modifyRecovered} type="recovered" image="./images/recovered-selected.png" />
       <span class="select-caption">AGED 13+, RECOVERED IN PAST 270 DAYS</span>
     </div>
     <div class="selectable-div">
-      <AdultGrid onChange={modifyNegative} type="negative" image="./images/selected/Negative_Selected@4x.png" />
+      <AdultGrid onChange={modifyNegative} type="negative" image="./images/negative-selected.png" />
       <span class="select-caption">AGED 13+, TESTED COVID-19-NEGATIVE IN PAST 24 HRS</span>
     </div>
     <div class="selectable-div">
-      <AdultGrid onChange={modifyVaccinated} type="vaccinated" image="./images/selected/Vaccinated_Selected@4x.png" />
+      <AdultGrid onChange={modifyVaccinated} type="vaccinated" image="./images/vaccinated-selected.png" />
       <span class="select-caption">AGED 13+, FULLY VACCINATED</span>
     </div>
     <div class="selectable-div">
-      <AdultGrid onChange={modifyOthers} type="others" image="./images/selected/Others_Selected@4x.png" />
+      <AdultGrid onChange={modifyOthers} type="others" image="./images/others-selected.png" />
       <span class="select-caption">AGED 13+, OTHERS</span>
     </div>
     <div class="selectable-div">
-      <ChildGrid onChange={modifyChild} type="child" image="./images/selected/Child_Selected@4x.png" />
+      <ChildGrid onChange={modifyChild} type="child" image="./images/child-selected.png" />
       <span class="select-caption">AGED 0-12</span>
     </div>
     <div class="selectable-div">
@@ -226,11 +226,6 @@
     height: 34px;
     position: relative;
     margin: 8px;
-  }
-
-  .outline {
-    position: absolute;
-    z-index: 1;
   }
 
   .slider {

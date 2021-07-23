@@ -8,7 +8,7 @@
   <div class="selectable-grid grid-six">
     {#each Array(5) as _, i}
       <div>
-        <img on:click={() => onChange(i)} class="outline" src="./images/ChildOutline@4x.png" alt="" />
+        <img on:click={() => onChange(i)} class="outline" src="./images/child-outline.png" alt="" />
         <img class="unselected" src={image} alt="" id={type + i} />
       </div>
     {/each}
