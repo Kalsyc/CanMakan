@@ -20,17 +20,17 @@
     if (recoveredNumber + negativeNumber + vaccinatedNumber + othersNumber + childNumber === 0) {
       checkerHeaderElement.style.color = '#EDEDED';
       checkerHeaderElement.style.backgroundColor = '#000000';
-      statusElement.textContent = 'Select Your Dining Group';
+      statusElement.innerHTML = 'Select Your Dining Group';
       startCondition = false;
     }
     if (startCondition) {
       checkerHeaderElement.style.color = '#000000';
       canMakan = checkCanMakan();
       if (canMakan) {
-        statusElement.textContent = 'Group Dine-In? YES*';
+        statusElement.innerHTML = 'Group Dine-In? <b>YES*</b>';
         checkerHeaderElement.style.backgroundColor = '#00FF75';
       } else {
-        statusElement.textContent = 'Group Dine-In? NO*';
+        statusElement.innerHTML = 'Group Dine-In? <b>NO*</b>';
         checkerHeaderElement.style.backgroundColor = '#FF5C00';
       }
     }
@@ -122,19 +122,21 @@
     }
   };
 
-  const showDropdown = (e: MouseEvent): void => {
-    const targetElement: HTMLImageElement = e.target as HTMLImageElement;
+  const showDropdown = (): void => {
     isDropdownShown = !isDropdownShown;
-    targetElement.style.transform = targetElement.style.transform ? '' : 'rotate(180deg)';
+    document.getElementById('dropdown').style.opacity = isDropdownShown ? '0' : '1';
   };
 </script>
 
 <main>
+  {#if isDropdownShown}
+    <div class="clickback-div" on:click={(e) => showDropdown()} />
+  {/if}
   <div id="checker-header" class="checker-header">
     <span id="status"> Select Your Dining Group </span>
 
     {#if startCondition}
-      <img class="dropdown" src="./images/dropdown.png" alt="" on:click={(e) => showDropdown(e)} />
+      <img id="dropdown" class="dropdown" src="./images/dropdown.png" alt="" on:click={() => showDropdown()} />
     {/if}
 
     {#if isDropdownShown}
@@ -173,6 +175,7 @@
       {/if}
     {/if}
   </div>
+
   {#if startCondition && !isDropdownShown}
     <div class="circle"><span>{recoveredNumber + negativeNumber + vaccinatedNumber + othersNumber + childNumber}</span></div>
   {/if}
@@ -210,6 +213,14 @@
     min-height: 100vh;
   }
 
+  .clickback-div {
+    position: absolute;
+    opacity: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: 2;
+  }
+
   .canMakan {
     background-color: #002d15;
   }
@@ -228,7 +239,7 @@
 
   .dropdown-text-div {
     position: absolute;
-    z-index: 2;
+    z-index: 3;
     min-width: 100vw;
     text-align: center;
     color: #ededed;
