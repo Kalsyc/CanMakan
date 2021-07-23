@@ -1,5 +1,8 @@
 <script lang="ts">
   import { afterUpdate } from 'svelte';
+  import AdultGrid from '../components/AdultGrid.svelte';
+  import ChildGrid from '../components/ChildGrid.svelte';
+  import ToggleHousehold from '../components/ToggleHousehold.svelte';
 
   let recoveredNumber: number = 0;
   let negativeNumber: number = 0;
@@ -17,25 +20,29 @@
     if (recoveredNumber + negativeNumber + vaccinatedNumber + othersNumber + childNumber === 0) {
       checkerHeaderElement.style.color = '#EDEDED';
       checkerHeaderElement.style.backgroundColor = '#000000';
-      statusElement.textContent = 'Select Your Dining Group';
+      statusElement.innerHTML = 'Select Your Dining Group';
       startCondition = false;
     }
     if (startCondition) {
       checkerHeaderElement.style.color = '#000000';
       canMakan = checkCanMakan();
       if (canMakan) {
-        statusElement.textContent = 'Group Dine-In? YES*';
+        statusElement.innerHTML = 'Group Dine-In? <b>YES*</b>';
         checkerHeaderElement.style.backgroundColor = '#00FF75';
       } else {
-        statusElement.textContent = 'Group Dine-In? NO*';
+        statusElement.innerHTML = 'Group Dine-In? <b>NO*</b>';
         checkerHeaderElement.style.backgroundColor = '#FF5C00';
       }
     }
   });
 
+  const directToStuck = (): void => {
+    location.href = 'https://www.stuck.sg/';
+  };
+
   const checkCanMakan = (): boolean => {
+
     return false;
-    /*
     const totalNumber: number = recoveredNumber + negativeNumber + vaccinatedNumber + othersNumber + childNumber;
     const adultNumber: number = recoveredNumber + negativeNumber + vaccinatedNumber + othersNumber;
     //If total exceeds 5 or no. of children is 5 and more.
@@ -59,88 +66,79 @@
       return true;
     }
     return false;
-    */
   };
 
-  const selectElement = (e: MouseEvent): void => {
+  const modifyRecovered = (i: number): void => {
     if (!startCondition) {
       startCondition = true;
     }
-    const targetElement: HTMLImageElement = e.target as HTMLImageElement;
-    switch (targetElement.id) {
-      case 'recovered':
-        modifyRecovered(targetElement);
-        break;
-      case 'negative':
-        modifyNegative(targetElement);
-        break;
-      case 'vaccinated':
-        modifyVaccinated(targetElement);
-        break;
-      case 'others':
-        modifyOthers(targetElement);
-        break;
-      case 'child':
-        modifyChild(targetElement);
-        break;
-      default:
-        console.log('Wrong id?');
-    }
-  };
-
-  const modifyRecovered = (target: HTMLImageElement): void => {
-    if (target.classList.toggle('unselected')) {
+    if (document.getElementById('recovered' + i).classList.toggle('unselected')) {
       recoveredNumber -= 1;
     } else {
       recoveredNumber += 1;
     }
   };
 
-  const modifyNegative = (target: HTMLImageElement): void => {
-    if (target.classList.toggle('unselected')) {
+  const modifyNegative = (i: number): void => {
+    if (!startCondition) {
+      startCondition = true;
+    }
+    if (document.getElementById('negative' + i).classList.toggle('unselected')) {
       negativeNumber -= 1;
     } else {
       negativeNumber += 1;
     }
   };
 
-  const modifyVaccinated = (target: HTMLImageElement): void => {
-    if (target.classList.toggle('unselected')) {
+  const modifyVaccinated = (i: number): void => {
+    if (!startCondition) {
+      startCondition = true;
+    }
+    if (document.getElementById('vaccinated' + i).classList.toggle('unselected')) {
       vaccinatedNumber -= 1;
     } else {
       vaccinatedNumber += 1;
     }
   };
 
-  const modifyOthers = (target: HTMLImageElement): void => {
-    if (target.classList.toggle('unselected')) {
+  const modifyOthers = (i: number): void => {
+    if (!startCondition) {
+      startCondition = true;
+    }
+    if (document.getElementById('others' + i).classList.toggle('unselected')) {
       othersNumber -= 1;
     } else {
       othersNumber += 1;
     }
   };
 
-  const modifyChild = (target: HTMLImageElement): void => {
-    if (target.classList.toggle('unselected')) {
+  const modifyChild = (i: number): void => {
+    if (!startCondition) {
+      startCondition = true;
+    }
+    if (document.getElementById('child' + i).classList.toggle('unselected')) {
       childNumber -= 1;
     } else {
       childNumber += 1;
     }
   };
 
-  const showDropdown = (e: MouseEvent): void => {
-    const targetElement: HTMLImageElement = e.target as HTMLImageElement;
+  const showDropdown = (): void => {
     isDropdownShown = !isDropdownShown;
-    targetElement.style.transform = targetElement.style.transform ? '' : 'rotate(180deg)';
+    document.getElementById('dropdown').style.display = isDropdownShown ? 'none' : 'block';
   };
 </script>
 
 <main>
+  {#if isDropdownShown}
+    <div class="clickback-div" on:click={(e) => showDropdown()} />
+  {/if}
+
   <div id="checker-header" class="checker-header">
     <span id="status"> Select Your Dining Group </span>
 
     {#if startCondition}
-      <img class="dropdown" src="./images/dropdown.png" alt="" on:click={(e) => showDropdown(e)} />
+      <img id="dropdown" class="dropdown" src="./images/dropdown.png" alt="" on:click={() => showDropdown()} />
     {/if}
 
     {#if isDropdownShown}
@@ -157,7 +155,7 @@
               Do remember that it is still safer for you to avoid eating out in groups and you’ll minimize the risk to your family members.
             </span>
             <span class="final-text"> Let’s press on together, get vaccinated early, and stay safe. </span>
-            <div class="stuck-text">With love, from STUCK Design</div>
+            <div class="stuck-text" on:click={() => directToStuck()}>With love, from STUCK Design</div>
           </div>
         </div>
       {:else}
@@ -173,79 +171,40 @@
               However, this is best for you and your loved ones. You’ll minimize the risk to your family members. There will be brighter days ahead.
             </span>
             <span class="final-text"> Let’s press on together, get vaccinated early, and stay safe. </span>
-            <div class="stuck-text">With love, from STUCK Design</div>
+            <div class="stuck-text" on:click={() => directToStuck()}>With love, from STUCK Design</div>
           </div>
         </div>
       {/if}
     {/if}
   </div>
+
   {#if startCondition && !isDropdownShown}
     <div class="circle"><span>{recoveredNumber + negativeNumber + vaccinatedNumber + othersNumber + childNumber}</span></div>
   {/if}
+
   <div class="checker-body">
     <div class="selectable-div">
-      <div class="selectable-grid grid-six">
-        <img class="unselected" src="./images/recovered.png" alt="" id="recovered" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/recovered.png" alt="" id="recovered" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/recovered.png" alt="" id="recovered" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/recovered.png" alt="" id="recovered" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/recovered.png" alt="" id="recovered" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/recovered.png" alt="" id="recovered" on:click={(e) => selectElement(e)} />
-      </div>
+      <AdultGrid onChange={modifyRecovered} type="recovered" image="./images/recovered-selected.png" />
       <span class="select-caption">AGED 13+, RECOVERED IN PAST 270 DAYS</span>
     </div>
     <div class="selectable-div">
-      <div class="selectable-grid grid-six">
-        <img class="unselected" src="./images/negative.png" alt="" id="negative" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/negative.png" alt="" id="negative" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/negative.png" alt="" id="negative" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/negative.png" alt="" id="negative" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/negative.png" alt="" id="negative" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/negative.png" alt="" id="negative" on:click={(e) => selectElement(e)} />
-      </div>
+      <AdultGrid onChange={modifyNegative} type="negative" image="./images/negative-selected.png" />
       <span class="select-caption">AGED 13+, TESTED COVID-19-NEGATIVE IN PAST 24 HRS</span>
     </div>
     <div class="selectable-div">
-      <div class="selectable-grid grid-six">
-        <img class="unselected" src="./images/vaccinated.png" alt="" id="vaccinated" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/vaccinated.png" alt="" id="vaccinated" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/vaccinated.png" alt="" id="vaccinated" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/vaccinated.png" alt="" id="vaccinated" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/vaccinated.png" alt="" id="vaccinated" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/vaccinated.png" alt="" id="vaccinated" on:click={(e) => selectElement(e)} />
-      </div>
+      <AdultGrid onChange={modifyVaccinated} type="vaccinated" image="./images/vaccinated-selected.png" />
       <span class="select-caption">AGED 13+, FULLY VACCINATED</span>
     </div>
     <div class="selectable-div">
-      <div class="selectable-grid grid-six">
-        <img class="unselected" src="./images/others.png" alt="" id="others" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/others.png" alt="" id="others" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/others.png" alt="" id="others" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/others.png" alt="" id="others" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/others.png" alt="" id="others" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/others.png" alt="" id="others" on:click={(e) => selectElement(e)} />
-      </div>
+      <AdultGrid onChange={modifyOthers} type="others" image="./images/others-selected.png" />
       <span class="select-caption">AGED 13+, OTHERS</span>
     </div>
     <div class="selectable-div">
-      <div class="selectable-grid grid-five">
-        <img class="unselected" src="./images/child.png" alt="" id="child" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/child.png" alt="" id="child" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/child.png" alt="" id="child" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/child.png" alt="" id="child" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/child.png" alt="" id="child" on:click={(e) => selectElement(e)} />
-      </div>
+      <ChildGrid onChange={modifyChild} type="child" image="./images/child-selected.png" />
       <span class="select-caption">AGED 0-12</span>
     </div>
     <div class="selectable-div">
-      <div class="toggle-div">
-        <span id="falseValue">No</span>
-        <label class="switch">
-          <input type="checkbox" bind:checked={isSameHousehold} />
-          <span class="slider" />
-        </label>
-        <span id="falseValue">Yes</span>
-      </div>
+      <ToggleHousehold bind:isSameHousehold />
       <span class="select-caption">EVERYONE FROM SAME HOUSEHOLD?</span>
     </div>
   </div>
@@ -257,57 +216,30 @@
     min-height: 100vh;
   }
 
-  .toggle-div {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
+  /* Animations for blinking dropdown */
+
+  @keyframes blink {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  #dropdown {
+    animation: blink 1s;
+    animation-iteration-count: infinite;
   }
 
-  .switch {
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-    position: relative;
-    margin: 8px;
-  }
-
-  .slider {
-    z-index: 500;
+  .clickback-div {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #959595;
-    border-radius: 40px;
-    cursor: pointer;
-  }
-
-  .slider::before {
-    content: '';
-    height: 26px;
-    width: 26px;
-    position: absolute;
-    left: 4px;
-    bottom: 4px;
-    border-radius: 50%;
-    background-color: #ffffff;
-    transition: 0.4s all ease;
-  }
-
-  input {
     opacity: 0;
-    width: 0;
-    height: 0;
-  }
-
-  input:checked + .slider::before {
-    transform: translateX(26px);
+    height: 100vh;
+    width: 100vw;
+    z-index: 2;
   }
 
   .canMakan {
@@ -321,13 +253,14 @@
   .dropdown {
     position: absolute;
     right: 15px;
-    top: 5px;
+    top: 0.5em;
     width: 15px;
     height: 15px;
   }
 
   .dropdown-text-div {
     position: absolute;
+    z-index: 3;
     min-width: 100vw;
     text-align: center;
     color: #ededed;
@@ -336,7 +269,8 @@
   }
 
   .text-div {
-    padding: 2em 1em;
+    padding: 1em 0.5em;
+    line-height: 1em;
     display: flex;
     justify-items: center;
     align-items: center;
@@ -346,26 +280,26 @@
 
   .disclaimer-text {
     font-weight: 400;
-    font-size: 0.6rem;
-    margin: 1em 0;
+    font-size: 0.75rem;
+    margin: 0.5em 0;
   }
 
   .mood-text {
     font-weight: 700;
     font-size: 1rem;
-    margin: 1em 0;
+    margin: 0.5em 0;
   }
 
   .caption-text {
     font-weight: 400;
     font-size: 1rem;
-    margin: 1em 0;
+    margin: 0.5em 0;
   }
 
   .final-text {
     font-weight: 700;
     font-size: 1rem;
-    margin: 1em 0;
+    margin: 0.5em 0;
   }
 
   .stuck-text {
@@ -380,6 +314,11 @@
     opacity: 1;
   }
 
+  .stuck-text:hover {
+    cursor: pointer;
+    opacity: 0.5;
+  }
+
   .checker-body {
     padding: 20px 0;
   }
@@ -391,28 +330,11 @@
     align-items: center;
   }
 
-  .selectable-grid {
-    display: grid;
-    grid-column-gap: 10px;
-  }
-
-  .grid-six {
-    grid-template-columns: repeat(6, 1fr);
-  }
-
-  .grid-five {
-    grid-template-columns: repeat(5, 1fr);
-  }
-
   .select-caption {
     font-family: 'Nunito', sans-serif;
     font-weight: 700;
-    font-size: 0.55rem;
-    margin: 10px 0;
-  }
-
-  .unselected {
-    opacity: 0.15;
+    font-size: 0.7rem;
+    margin: 1em 0;
   }
 
   .circle {
@@ -440,23 +362,29 @@
     font-size: 1.25rem;
     font-family: 'Nunito', sans-serif;
     font-weight: 400;
+    height: 2em;
+    line-height: 2em;
   }
 
-  @media screen and (min-width: 1440px) {
+  @media screen and (min-width: 1024px) {
     .disclaimer-text {
       font-size: 1rem;
+      margin: 1.5em 0.5em;
     }
 
     .mood-text {
       font-size: 1.5rem;
+      margin: 1.5em 0.5em;
     }
 
     .caption-text {
       font-size: 1.5rem;
+      margin: 1.5em 0.5em;
     }
 
     .final-text {
       font-size: 1.5rem;
+      margin: 1.5em 0.5em;
     }
 
     .select-caption {
@@ -465,10 +393,6 @@
 
     .selectable-div {
       margin: 1em 0;
-    }
-
-    .selectable-grid {
-      grid-column-gap: 20px;
     }
   }
 </style>
