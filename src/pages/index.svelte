@@ -41,7 +41,8 @@
   };
 
   const checkCanMakan = (): boolean => {
-    //return false;
+
+    return false;
     const totalNumber: number = recoveredNumber + negativeNumber + vaccinatedNumber + othersNumber + childNumber;
     const adultNumber: number = recoveredNumber + negativeNumber + vaccinatedNumber + othersNumber;
     //If total exceeds 5 or no. of children is 5 and more.
