@@ -124,7 +124,7 @@
 
   const showDropdown = (): void => {
     isDropdownShown = !isDropdownShown;
-    document.getElementById('dropdown').style.opacity = isDropdownShown ? '0' : '1';
+    document.getElementById('dropdown').style.display = isDropdownShown ? 'none' : 'block';
   };
 </script>
 
@@ -132,6 +132,7 @@
   {#if isDropdownShown}
     <div class="clickback-div" on:click={(e) => showDropdown()} />
   {/if}
+
   <div id="checker-header" class="checker-header">
     <span id="status"> Select Your Dining Group </span>
 
@@ -179,6 +180,7 @@
   {#if startCondition && !isDropdownShown}
     <div class="circle"><span>{recoveredNumber + negativeNumber + vaccinatedNumber + othersNumber + childNumber}</span></div>
   {/if}
+
   <div class="checker-body">
     <div class="selectable-div">
       <AdultGrid onChange={modifyRecovered} type="recovered" image="./images/recovered-selected.png" />
@@ -211,6 +213,24 @@
   main {
     background-color: #e5e5e5;
     min-height: 100vh;
+  }
+
+  /* Animations for blinking dropdown */
+
+  @keyframes blink {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  #dropdown {
+    animation: blink 1s;
+    animation-iteration-count: infinite;
   }
 
   .clickback-div {
@@ -293,6 +313,11 @@
     opacity: 1;
   }
 
+  .stuck-text:hover {
+    cursor: pointer;
+    opacity: 0.5;
+  }
+
   .checker-body {
     padding: 20px 0;
   }
@@ -307,8 +332,8 @@
   .select-caption {
     font-family: 'Nunito', sans-serif;
     font-weight: 700;
-    font-size: 0.55rem;
-    margin: 10px 0;
+    font-size: 0.7rem;
+    margin: 1em 0;
   }
 
   .circle {
@@ -340,21 +365,25 @@
     line-height: 2em;
   }
 
-  @media screen and (min-width: 1440px) {
+  @media screen and (min-width: 1024px) {
     .disclaimer-text {
       font-size: 1rem;
+      margin: 1.5em 0.5em;
     }
 
     .mood-text {
       font-size: 1.5rem;
+      margin: 1.5em 0.5em;
     }
 
     .caption-text {
       font-size: 1.5rem;
+      margin: 1.5em 0.5em;
     }
 
     .final-text {
       font-size: 1.5rem;
+      margin: 1.5em 0.5em;
     }
 
     .select-caption {
