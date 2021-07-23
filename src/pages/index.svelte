@@ -1,5 +1,6 @@
 <script lang="ts">
   import { afterUpdate } from 'svelte';
+  import AdultGrid from '../components/AdultGrid.svelte';
 
   let recoveredNumber: number = 0;
   let negativeNumber: number = 0;
@@ -35,7 +36,6 @@
 
   const checkCanMakan = (): boolean => {
     //return false;
-
     const totalNumber: number = recoveredNumber + negativeNumber + vaccinatedNumber + othersNumber + childNumber;
     const adultNumber: number = recoveredNumber + negativeNumber + vaccinatedNumber + othersNumber;
     //If total exceeds 5 or no. of children is 5 and more.
@@ -61,66 +61,55 @@
     return false;
   };
 
-  const selectElement = (e: MouseEvent): void => {
+  const modifyRecovered = (i: number): void => {
     if (!startCondition) {
       startCondition = true;
     }
-    const targetElement: HTMLImageElement = e.target as HTMLImageElement;
-    switch (targetElement.id) {
-      case 'recovered':
-        modifyRecovered(targetElement);
-        break;
-      case 'negative':
-        modifyNegative(targetElement);
-        break;
-      case 'vaccinated':
-        modifyVaccinated(targetElement);
-        break;
-      case 'others':
-        modifyOthers(targetElement);
-        break;
-      case 'child':
-        modifyChild(targetElement);
-        break;
-      default:
-        console.log('Wrong id?');
-    }
-  };
-
-  const modifyRecovered = (target: HTMLImageElement): void => {
-    if (target.classList.toggle('unselected')) {
+    if (document.getElementById('recovered' + i).classList.toggle('unselected')) {
       recoveredNumber -= 1;
     } else {
       recoveredNumber += 1;
     }
   };
 
-  const modifyNegative = (target: HTMLImageElement): void => {
-    if (target.classList.toggle('unselected')) {
+  const modifyNegative = (i: number): void => {
+    if (!startCondition) {
+      startCondition = true;
+    }
+    if (document.getElementById('negative' + i).classList.toggle('unselected')) {
       negativeNumber -= 1;
     } else {
       negativeNumber += 1;
     }
   };
 
-  const modifyVaccinated = (target: HTMLImageElement): void => {
-    if (target.classList.toggle('unselected')) {
+  const modifyVaccinated = (i: number): void => {
+    if (!startCondition) {
+      startCondition = true;
+    }
+    if (document.getElementById('vaccinated' + i).classList.toggle('unselected')) {
       vaccinatedNumber -= 1;
     } else {
       vaccinatedNumber += 1;
     }
   };
 
-  const modifyOthers = (target: HTMLImageElement): void => {
-    if (target.classList.toggle('unselected')) {
+  const modifyOthers = (i: number): void => {
+    if (!startCondition) {
+      startCondition = true;
+    }
+    if (document.getElementById('others' + i).classList.toggle('unselected')) {
       othersNumber -= 1;
     } else {
       othersNumber += 1;
     }
   };
 
-  const modifyChild = (target: HTMLImageElement): void => {
-    if (target.classList.toggle('unselected')) {
+  const modifyChild = (i: number): void => {
+    if (!startCondition) {
+      startCondition = true;
+    }
+    if (document.getElementById('child' + i).classList.toggle('unselected')) {
       childNumber -= 1;
     } else {
       childNumber += 1;
@@ -183,56 +172,61 @@
   {/if}
   <div class="checker-body">
     <div class="selectable-div">
+      <AdultGrid onChange={modifyRecovered} image="./images/selected/Recovered_Selected@4x.png" />
+      <!--
       <div class="selectable-grid grid-six">
-        <img class="unselected" src="./images/recovered.png" alt="" id="recovered" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/recovered.png" alt="" id="recovered" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/recovered.png" alt="" id="recovered" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/recovered.png" alt="" id="recovered" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/recovered.png" alt="" id="recovered" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/recovered.png" alt="" id="recovered" on:click={(e) => selectElement(e)} />
+       
+        {#each Array(6) as _, i}
+          <div>
+            <img on:click={() => modifyRecovered(i)} id="recovered" class="outline" src="./images/Outline@4x.png" alt="" />
+            <img class="unselected" src="./images/selected/Recovered_Selected@4x.png" alt="" id={'recovered' + i} />
+          </div>
+        {/each}
       </div>
+    -->
       <span class="select-caption">AGED 13+, RECOVERED IN PAST 270 DAYS</span>
     </div>
     <div class="selectable-div">
       <div class="selectable-grid grid-six">
-        <img class="unselected" src="./images/negative.png" alt="" id="negative" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/negative.png" alt="" id="negative" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/negative.png" alt="" id="negative" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/negative.png" alt="" id="negative" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/negative.png" alt="" id="negative" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/negative.png" alt="" id="negative" on:click={(e) => selectElement(e)} />
+        {#each Array(6) as _, i}
+          <div>
+            <img on:click={() => modifyNegative(i)} id="negative" class="outline" src="./images/Outline@4x.png" alt="" />
+            <img class="unselected" src="./images/selected/Negative_Selected@4x.png" alt="" id={'negative' + i} />
+          </div>
+        {/each}
       </div>
       <span class="select-caption">AGED 13+, TESTED COVID-19-NEGATIVE IN PAST 24 HRS</span>
     </div>
     <div class="selectable-div">
       <div class="selectable-grid grid-six">
-        <img class="unselected" src="./images/vaccinated.png" alt="" id="vaccinated" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/vaccinated.png" alt="" id="vaccinated" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/vaccinated.png" alt="" id="vaccinated" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/vaccinated.png" alt="" id="vaccinated" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/vaccinated.png" alt="" id="vaccinated" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/vaccinated.png" alt="" id="vaccinated" on:click={(e) => selectElement(e)} />
+        {#each Array(6) as _, i}
+          <div>
+            <img on:click={() => modifyVaccinated(i)} id="vaccinated" class="outline" src="./images/Outline@4x.png" alt="" />
+            <img class="unselected" src="./images/selected/Vaccinated_Selected@4x.png" alt="" id={'vaccinated' + i} />
+          </div>
+        {/each}
       </div>
       <span class="select-caption">AGED 13+, FULLY VACCINATED</span>
     </div>
     <div class="selectable-div">
       <div class="selectable-grid grid-six">
-        <img class="unselected" src="./images/others.png" alt="" id="others" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/others.png" alt="" id="others" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/others.png" alt="" id="others" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/others.png" alt="" id="others" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/others.png" alt="" id="others" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/others.png" alt="" id="others" on:click={(e) => selectElement(e)} />
+        {#each Array(6) as _, i}
+          <div>
+            <img on:click={() => modifyOthers(i)} id="others" class="outline" src="./images/Outline@4x.png" alt="" />
+            <img class="unselected" src="./images/selected/Others_Selected@4x.png" alt="" id={'others' + i} />
+          </div>
+        {/each}
       </div>
       <span class="select-caption">AGED 13+, OTHERS</span>
     </div>
     <div class="selectable-div">
       <div class="selectable-grid grid-five">
-        <img class="unselected" src="./images/child.png" alt="" id="child" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/child.png" alt="" id="child" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/child.png" alt="" id="child" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/child.png" alt="" id="child" on:click={(e) => selectElement(e)} />
-        <img class="unselected" src="./images/child.png" alt="" id="child" on:click={(e) => selectElement(e)} />
+        {#each Array(5) as _, i}
+          <div>
+            <img on:click={() => modifyChild(i)} id="child" class="outline" src="./images/ChildOutline@4x.png" alt="" />
+            <img class="unselected" src="./images/selected/Child_Selected@4x.png" alt="" id={'child' + i} />
+          </div>
+        {/each}
       </div>
       <span class="select-caption">AGED 0-12</span>
     </div>
@@ -270,6 +264,11 @@
     height: 34px;
     position: relative;
     margin: 8px;
+  }
+
+  .outline {
+    position: absolute;
+    z-index: 1;
   }
 
   .slider {
